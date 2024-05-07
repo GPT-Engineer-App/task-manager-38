@@ -9,13 +9,13 @@ const Index = () => {
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
+      setTasks(JSON.parse(storedTasks).map(task => ({ text: task, completed: false })));
     }
   }, []);
 
   const handleAddTask = () => {
     if (inputValue.trim() !== '') {
-      const newTasks = [...tasks, inputValue];
+      const newTasks = [...tasks, { text: inputValue, completed: false }];
       localStorage.setItem('tasks', JSON.stringify(newTasks));
       setTasks(newTasks);
       setInputValue('');
@@ -24,6 +24,17 @@ const Index = () => {
 
   const handleRemoveTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
+    setTasks(newTasks);
+  };
+
+  const toggleTaskCompletion = (index) => {
+    const newTasks = tasks.map((task, i) => {
+      if (i === index) {
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
     localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
   };
@@ -40,13 +51,14 @@ const Index = () => {
         <Button onClick={handleAddTask} colorScheme="blue">Add Task</Button>
         <List spacing={3} w="100%">
           {tasks.map((task, index) => (
-            <ListItem key={index} d="flex" justifyContent="space-between" alignItems="center">
-              {task}
+            <ListItem key={index} d="flex" justifyContent="space-between" alignItems="center" textDecoration={task.completed ? 'line-through' : 'none'}>
+              {task.text}
               <IconButton
                 aria-label="Delete task"
                 icon={<FaTrash />}
                 onClick={() => handleRemoveTask(index)}
               />
+              <Button onClick={() => toggleTaskCompletion(index)}>{task.completed ? 'Mark Incomplete' : 'Mark Complete'}</Button>
             </ListItem>
           ))}
         </List>
