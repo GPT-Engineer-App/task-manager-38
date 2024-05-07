@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, VStack, Input, Button, List, ListItem, ListIcon, IconButton } from '@chakra-ui/react';
 import { FaTrash } from 'react-icons/fa';
 
@@ -6,15 +6,25 @@ const Index = () => {
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
+  useEffect(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+
   const handleAddTask = () => {
     if (inputValue.trim() !== '') {
-      setTasks([...tasks, inputValue]);
+      const newTasks = [...tasks, inputValue];
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+      setTasks(newTasks);
       setInputValue('');
     }
   };
 
   const handleRemoveTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
     setTasks(newTasks);
   };
 
