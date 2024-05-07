@@ -8,24 +8,46 @@ const Index = () => {
 
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks).map(task => ({ text: task, completed: false })));
+    try {
+      if (storedTasks) {
+        const tasks = JSON.parse(storedTasks);
+        if (Array.isArray(tasks)) {
+          setTasks(tasks.map(task => ({
+            ...task,
+            completed: !!task.completed
+          })));
+        } else {
+          console.error('Invalid tasks format: ', tasks);
+          setTasks([]);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to parse tasks from localStorage: ', error);
+      setTasks([]);
     }
   }, []);
 
   const handleAddTask = () => {
     if (inputValue.trim() !== '') {
       const newTasks = [...tasks, { text: inputValue, completed: false }];
-      localStorage.setItem('tasks', JSON.stringify(newTasks));
-      setTasks(newTasks);
-      setInputValue('');
+      try {
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+        setTasks(newTasks);
+        setInputValue('');
+      } catch (error) {
+        console.error('Failed to save tasks to localStorage: ', error);
+      }
     }
   };
 
   const handleRemoveTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-    setTasks(newTasks);
+    try {
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+      setTasks(newTasks);
+    } catch (error) {
+      console.error('Failed to remove task from localStorage: ', error);
+    }
   };
 
   const toggleTaskCompletion = (index) => {
@@ -35,8 +57,12 @@ const Index = () => {
       }
       return task;
     });
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-    setTasks(newTasks);
+    try {
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+      setTasks(newTasks);
+    } catch (error) {
+      console.error('Failed to update task completion status in localStorage: ', error);
+    }
   };
 
   return (
