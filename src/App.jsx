@@ -8,7 +8,7 @@ function App() {
       <Box bg="brand.700" w="100%" p={4} color="white">
         <Flex justify="center" align="center">
           <Text fontSize="xl" fontWeight="bold">Todo App</Text>
-          <Link to="/completed" style={{ color: 'white', marginLeft: '20px' }}>Completed Tasks</Link>
+          <Link to="/completed" style={{ color: 'white', marginLeft: '20px', textDecoration: 'none' }}>Completed Tasks</Link>
         </Flex>
       </Box>
       <Router style={{ marginTop: '64px', flex: "1" }}>
