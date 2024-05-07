@@ -1,4 +1,5 @@
-import { Route, BrowserRouter as Router, Routes, Link } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { Text, Flex, Box } from '@chakra-ui/react';
 import Index from "./pages/Index.jsx";
 import CompletedTasks from "./pages/CompletedTasks.jsx";
@@ -9,7 +10,7 @@ function App() {
       <Box bg="brand.700" w="100%" p={4} color="white">
         <Flex justify="center" align="center" style={{ gap: '20px' }}>
           <Text fontSize="xl" fontWeight="bold">Todo App</Text>
-          <Link to="/completed" style={{ textDecoration: 'none', color: 'white' }}>
+          <Link to="/completed" style={{ textDecoration: 'none', color: 'white', margin: '0 20px' }}>
             <Text fontSize="xl" fontWeight="bold">Completed Tasks</Text>
           </Link>
         </Flex>
