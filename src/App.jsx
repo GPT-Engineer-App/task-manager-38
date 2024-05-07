@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Text, Flex, Box } from '@chakra-ui/react';
 import Index from "./pages/Index.jsx";
+import CompletedTasks from "./pages/CompletedTasks.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router style={{ marginTop: '64px', flex: "1" }}>
         <Routes>
           <Route exact path="/" element={<Index />} />
+          <Route path="/completed" element={<CompletedTasks />} />
         </Routes>
       </Router>
       <Box bg="brand.700" w="100%" p={4} color="white" mt="auto">
